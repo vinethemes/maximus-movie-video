@@ -1,0 +1,1007 @@
+<?php
+    /**
+     * Theme options via the Customizer.
+     *
+     * @package maximus-movie-video
+     * @since maximus-movie-video 1.0
+     */
+
+    // ------------- Theme Customizer  ------------- //
+
+    add_action( 'customize_register', 'maximus_movie_video_customizer_register' );
+
+    function maximus_movie_video_customizer_register( $wp_customize ) {
+
+
+
+        // Pro Version
+        class Maximus_Movie_Video_Customize_Pro_Version extends WP_Customize_Control {
+    public $type = 'pro_options';
+    public $message = ''; // New property
+
+    public function render_content() {
+        if ( ! empty( $this->message ) && ! empty( $this->description ) ) {
+            echo '<p class="maximus-movie-video-pro-upgrade-message">';
+            echo esc_html( $this->message ) . ' ';
+            echo '<a href="' . esc_url( $this->description ) . '" target="_blank">';
+            echo '<strong>' . esc_html__( 'Maximus Movie Video Premium', 'maximus-movie-video' ) . '</strong>';
+            echo '</a>';
+            echo '</p>';
+        }
+    }
+}
+
+
+        // Pro Version Links
+        class Maximus_Movie_Video_Customize_Pro_Version_Links extends WP_Customize_Control {
+            public $type = 'pro_links';
+
+            public function render_content() {
+                ?>
+                <ul>
+                    <li class="customize-control">
+                        <h3><?php esc_html_e( 'Upgrade', 'maximus-movie-video' ); ?> <span>*</span></h3>
+                        <p><?php esc_html_e( 'There are lots of reasons to upgrade to Pro version. Unlimited custom Colors, rich Typography options, multiple variation of Blog Feed layout and way much more. Also Premium Support included.', 'maximus-movie-video' ); ?></p>
+                        <a href="<?php echo esc_url('https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/'); ?>" target="_blank" class="button button-primary widefat"><?php esc_html_e( 'Get Maximus Movie Video Premium', 'maximus-movie-video' ); ?></a>
+                    </li>
+                    <li class="customize-control">
+                        <h3><?php esc_html_e( 'Documentation', 'maximus-movie-video' ); ?></h3>
+                        <p><?php esc_html_e( 'Read how to customize the theme, set up widgets, and learn all the possible options available to you.', 'maximus-movie-video' ); ?></p>
+                        <a href="<?php echo esc_url('https://www.vinethemes.com/documentation/maximus-movie-video-theme-documentation/'); ?>" target="_blank" class="button button-primary widefat"><?php esc_html_e( 'Documentation', 'maximus-movie-video' ); ?></a>
+                    </li>
+                    <li class="customize-control">
+                        <h3><?php esc_html_e( 'Support', 'maximus-movie-video' ); ?></h3>
+                        <p><?php esc_html_e( 'For Maximus Movie Video theme related questions feel free to post on our support forums.', 'maximus-movie-video' ); ?></p>
+                        <a href="<?php echo esc_url('https://www.vinethemes.com/forums'); ?>" target="_blank" class="button button-primary widefat"><?php esc_html_e( 'Support', 'maximus-movie-video' ); ?></a>
+                    </li>
+
+                </ul>
+                <?php
+            }
+        }
+
+
+        /*
+        ** Pro Version =====
+        */
+
+        // add Colors section
+        $wp_customize->add_section( 'maximus_movie_video_pro' , array(
+            'title'		 => esc_html__( 'About Maximus Movie Video', 'maximus-movie-video' ),
+            'priority'	 => 1,
+            'capability' => 'edit_theme_options'
+        ) );
+
+        // Pro Version
+        $wp_customize->add_setting( 'pro_version_', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version_Links ( $wp_customize,
+                'pro_version_', array(
+                    'section'	=> 'maximus_movie_video_pro',
+                    'type'		=> 'pro_links',
+                    'label' 	=> '',
+                    'priority'	=> 1
+                )
+            )
+        );
+
+        // Light and Dark Logo
+        $wp_customize->remove_control('custom_logo');
+        $wp_customize->add_setting( 'maximus_movie_video_light_logo', array(
+            // Image setting don't have anything in it, otherwise it will not get saved.
+            'sanitize_callback' => 'maximus_movie_video_sanitize_image'
+        ) );
+
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'maximus_movie_video_light_logo1', array(
+                    'label'    => esc_html__( 'Light Logo', 'maximus-movie-video' ),
+                    'section'  => 'title_tagline',
+                    'settings' => 'maximus_movie_video_light_logo'
+                )
+            )
+        );
+
+        $wp_customize->add_setting( 'maximus_movie_video_dark_logo', array(
+            // Image setting don't have anything in it, otherwise it will not get saved.
+            'sanitize_callback' => 'maximus_movie_video_sanitize_image'
+        ) );
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'maximus_movie_video_dark_logo1', array(
+                    'label'    => esc_html__( 'Dark Logo', 'maximus-movie-video' ),
+                    'section'  => 'title_tagline',
+                    'settings' => 'maximus_movie_video_dark_logo'
+                )
+            )
+        );
+
+
+      
+
+
+
+        
+
+
+
+        //Main Slider
+        $wp_customize->add_section( 'maximus_movie_video_customizer_mainslider', array(
+            'title'       => esc_html__( 'Main Featured Slider', 'maximus-movie-video' ),
+            'description' => esc_html__( 'Configure your Main Featured Slider here.', 'maximus-movie-video' ),
+            'priority'    => 4
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_customizer_mainslider_disable', array(
+            'default'    => 'enable',
+            'section'  => 'maximus_movie_video_customizer_mainslider',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_radio',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_mainslider_select_box', array(
+            'settings' => 'maximus_movie_video_customizer_mainslider_disable',
+            'label'    => esc_html__( 'Homepage Main Featured Slider', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_customizer_mainslider',
+            'type'     => 'select',
+            'choices'  => array(
+                'enable'  => esc_html__( 'Enable', 'maximus-movie-video' ),
+                'disable' => esc_html__( 'Disable', 'maximus-movie-video' ),
+            ),
+            'priority' => 5
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_mainslider_category', array(
+            'default' => '0',
+            'sanitize_callback'	=> 'absint',
+            'section'  => 'maximus_movie_video_customizer_mainslider',
+
+        ) );
+        $wp_customize->add_control(new maximus_movie_video_Customize_Category_Control( $wp_customize, 'maximus_movie_video_mainslider_category', array(
+                    'label'    => esc_html__( 'Category for Main Featured Slider', 'maximus-movie-video' ),
+                    'section'  => 'maximus_movie_video_customizer_mainslider',
+                    'settings' => 'maximus_movie_video_mainslider_category',
+                    'priority'	 => 6
+                )
+            )
+        );
+
+
+        $wp_customize->add_setting( 'maximus_movie_video_mainslider_slides', array(
+            'default' => '12',
+            'sanitize_callback'	=> 'absint',
+            'section'  => 'maximus_movie_video_customizer_mainslider',
+        ) );
+
+        $wp_customize->add_control(new maximus_movie_video_Customize_Number_Control($wp_customize, 'maximus_movie_video_mainslider_slides', array(
+                    'label'      => esc_html__('Number of Posts for Main Featured Slider','maximus-movie-video'),
+                    'section'    => 'maximus_movie_video_customizer_mainslider',
+                    'settings'   => 'maximus_movie_video_mainslider_slides',
+                    'type'		 => 'number',
+                    'priority'	 => 8
+                )
+            )
+        );
+
+        
+
+        
+        // Pro Version
+        $wp_customize->add_setting( 'pro_version_colors6', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_colors6', array(
+                    'section'	  => 'maximus_movie_video_customizer_mainslider',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium for more options - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+// Social Media Links
+$wp_customize->add_section('maximus_movie_video_social_section', array(
+    'title'    => esc_html__('Social Links', 'maximus-movie-video'),
+    'priority' => 5,
+));
+
+$social_platforms = array(
+    'facebook'  => 'Facebook',
+    'twitter'   => 'Twitter (X)',
+    'instagram' => 'Instagram',
+    'youtube'   => 'YouTube',
+    'telegram'  => 'Telegram',
+    'tiktok'    => 'Tiktok',
+    'linkedin'  => 'Linkedin',
+    'pinterest' => 'Pinterest',
+    'snapchat'  => 'Snapchat',
+    'whatsapp'  => 'Whatsapp',
+    'reddit'    => 'Reddit',
+    'tumblr'    => 'Tumblr',
+    'discord'   => 'Discord',
+    'spotify'   => 'Spotify',
+    'dribbble'  => 'Dribbble',
+    'behance'   => 'Behance',
+    'github'    => 'Github',
+    'medium'    => 'Medium',
+    'slack'     => 'Slack',
+    'vk'        => 'Vk',
+    'flickr'    => 'Flickr',
+    'vimeo'     => 'Vimeo',
+    'wechat'    => 'WeChat',
+    'line'      => 'LINE',
+);
+
+foreach ($social_platforms as $slug => $label) {
+    $wp_customize->add_setting("maximus_movie_video_social_{$slug}", array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control("maximus_movie_video_social_{$slug}", array(
+        'label'   => sprintf( esc_html__( '%s URL', 'maximus-movie-video' ), $label ),
+        'section' => 'maximus_movie_video_social_section',
+        'type'    => 'url',
+    ));
+}
+
+
+        // Submit Video Button
+    $wp_customize->add_section('maximus_movie_video_submit_video_section', array(
+        'title' => __('Submit Video Button', 'maximus-movie-video'),
+        'priority' => 30,
+    ));
+
+    $wp_customize->add_setting('maximus_movie_video_submit_video_url', array(
+        'default' => '/submit-video',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('maximus_movie_video_submit_video_url_control', array(
+        'label' => __('Submit Video URL', 'maximus-movie-video'),
+        'section' => 'maximus_movie_video_submit_video_section',
+        'settings' => 'maximus_movie_video_submit_video_url',
+        'type' => 'url',
+    ));
+
+    // Pro Version
+        $wp_customize->add_setting( 'pro_version_submit_video', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_submit_video', array(
+                    'section'	  => 'maximus_movie_video_submit_video_section',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+
+// Below Slider Grid (2-Row) Section
+$wp_customize->add_section('maximus_movie_video_below_slider_grid', array(
+    'title'    => esc_html__('Below Slider - Grid 2-Row', 'maximus-movie-video'),
+    'priority' => 5,
+));
+
+// Enable/Disable
+$wp_customize->add_setting('maximus_movie_video_below_slider_enable', array(
+    'default'           => 'enable',
+    'sanitize_callback' => 'sanitize_text_field',
+));
+$wp_customize->add_control('maximus_movie_video_below_slider_enable', array(
+    'label'   => esc_html__('Enable Section', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_below_slider_grid',
+    'type'    => 'select',
+    'choices' => array(
+        'enable'  => esc_html__('Enable', 'maximus-movie-video'),
+        'disable' => esc_html__('Disable', 'maximus-movie-video'),
+    ),
+));
+// === BELOW SLIDER SECTION TITLE ===
+$wp_customize->add_setting('maximus_movie_video_below_slider_title', array(
+    'default'           => esc_html__('New Releases', 'maximus-movie-video'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('maximus_movie_video_below_slider_title', array(
+    'label'       => esc_html__('Section Title', 'maximus-movie-video'),
+    'section'     => 'maximus_movie_video_below_slider_grid',
+    'type'        => 'text',
+));
+// Category
+$wp_customize->add_setting('maximus_movie_video_below_slider_category', array(
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control(new maximus_movie_video_Customize_Category_Control($wp_customize, 'maximus_movie_video_below_slider_category', array(
+    'label'    => esc_html__('Select Category', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_below_slider_grid',
+    'settings' => 'maximus_movie_video_below_slider_category',
+)));
+
+// Number of Posts
+$wp_customize->add_setting('maximus_movie_video_below_slider_posts', array(
+    'default'           => 10,
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control('maximus_movie_video_below_slider_posts', array(
+    'label'    => esc_html__('Number of Posts', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_below_slider_grid',
+    'type'     => 'number',
+    'input_attrs' => array('min' => 1, 'max' => 20),
+));
+
+        // Pro Version
+        $wp_customize->add_setting( 'pro_version_slider_grid', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_slider_grid', array(
+                    'section'	  => 'maximus_movie_video_below_slider_grid',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+
+// Large Poster Section
+$wp_customize->add_section('maximus_movie_video_large_poster_section', array(
+    'title'    => esc_html__('Large Poster Section', 'maximus-movie-video'),
+    'priority' => 6,
+));
+
+// Enable/Disable
+$wp_customize->add_setting('maximus_movie_video_large_poster_enable', array(
+    'default'           => 'enable',
+    'sanitize_callback' => 'sanitize_text_field',
+));
+$wp_customize->add_control('maximus_movie_video_large_poster_enable', array(
+    'label'   => esc_html__('Enable Section', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_large_poster_section',
+    'type'    => 'select',
+    'choices' => array(
+        'enable'  => esc_html__('Enable', 'maximus-movie-video'),
+        'disable' => esc_html__('Disable', 'maximus-movie-video'),
+    ),
+));
+
+// Category
+$wp_customize->add_setting('maximus_movie_video_large_poster_category', array(
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control(new maximus_movie_video_Customize_Category_Control($wp_customize, 'maximus_movie_video_large_poster_category', array(
+    'label'    => esc_html__('Select Category', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_large_poster_section',
+    'settings' => 'maximus_movie_video_large_poster_category',
+)));
+
+// Number of Posts
+$wp_customize->add_setting('maximus_movie_video_large_poster_posts', array(
+    'default'           => 1,
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control('maximus_movie_video_large_poster_posts', array(
+    'label'    => esc_html__('Number of Posts', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_large_poster_section',
+    'type'     => 'number',
+    'input_attrs' => array('min' => 1, 'max' => 5),
+));
+   // Pro Version
+        $wp_customize->add_setting( 'pro_version_large_poster', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_large_poster', array(
+                    'section'	  => 'maximus_movie_video_large_poster_section',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+
+
+// Highlight Slider Section
+$wp_customize->add_section('maximus_movie_video_highlight_slider', array(
+    'title'    => esc_html__('Highlight Slider', 'maximus-movie-video'),
+    'priority' => 7,
+));
+
+// Enable/Disable
+$wp_customize->add_setting('maximus_movie_video_highlight_slider_enable', array(
+    'default'           => 'enable',
+    'sanitize_callback' => 'sanitize_text_field',
+));
+$wp_customize->add_control('maximus_movie_video_highlight_slider_enable', array(
+    'label'   => esc_html__('Enable Section', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_highlight_slider',
+    'type'    => 'select',
+    'choices' => array(
+        'enable'  => esc_html__('Enable', 'maximus-movie-video'),
+        'disable' => esc_html__('Disable', 'maximus-movie-video'),
+    ),
+));
+$wp_customize->add_setting('maximus_movie_video_highlight_slider_title', array(
+    'default' => esc_html__('Action Sequences', 'maximus-movie-video'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('maximus_movie_video_highlight_slider_title', array(
+    'label'   => esc_html__('Highlight Slider Section Title', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_highlight_slider',
+    'type'    => 'text',
+));
+
+// Category
+$wp_customize->add_setting('maximus_movie_video_highlight_slider_category', array(
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control(new maximus_movie_video_Customize_Category_Control($wp_customize, 'maximus_movie_video_highlight_slider_category', array(
+    'label'    => esc_html__('Select Category', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_highlight_slider',
+    'settings' => 'maximus_movie_video_highlight_slider_category',
+)));
+
+// Number of Posts
+$wp_customize->add_setting('maximus_movie_video_highlight_slider_posts', array(
+    'default'           => 6,
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control('maximus_movie_video_highlight_slider_posts', array(
+    'label'    => esc_html__('Number of Posts', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_highlight_slider',
+    'type'     => 'number',
+    'input_attrs' => array('min' => 1, 'max' => 12),
+));
+// Pro Version
+        $wp_customize->add_setting( 'pro_version_highlight_slider', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_highlight_slider', array(
+                    'section'	  => 'maximus_movie_video_highlight_slider',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+
+// Trending Grid Section
+$wp_customize->add_section('maximus_movie_video_trending_grid', array(
+    'title'    => esc_html__('Trending Grid', 'maximus-movie-video'),
+    'priority' => 8,
+));
+
+// Enable/Disable
+$wp_customize->add_setting('maximus_movie_video_trending_grid_enable', array(
+    'default'           => 'enable',
+    'sanitize_callback' => 'sanitize_text_field',
+));
+$wp_customize->add_control('maximus_movie_video_trending_grid_enable', array(
+    'label'   => esc_html__('Enable Section', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_trending_grid',
+    'type'    => 'select',
+    'choices' => array(
+        'enable'  => esc_html__('Enable', 'maximus-movie-video'),
+        'disable' => esc_html__('Disable', 'maximus-movie-video'),
+    ),
+));
+$wp_customize->add_setting('maximus_movie_video_trending_grid_title', array(
+    'default' => esc_html__('Trending Now', 'maximus-movie-video'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('maximus_movie_video_trending_grid_title', array(
+    'label'   => esc_html__('Trending Grid Section Title', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_trending_grid',
+    'type'    => 'text',
+));
+
+// Category
+$wp_customize->add_setting('maximus_movie_video_trending_grid_category', array(
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control(new maximus_movie_video_Customize_Category_Control($wp_customize, 'maximus_movie_video_trending_grid_category', array(
+    'label'    => esc_html__('Select Category', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_trending_grid',
+    'settings' => 'maximus_movie_video_trending_grid_category',
+)));
+
+// Number of Posts
+$wp_customize->add_setting('maximus_movie_video_trending_grid_posts', array(
+    'default'           => 10,
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control('maximus_movie_video_trending_grid_posts', array(
+    'label'    => esc_html__('Number of Posts', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_trending_grid',
+    'type'     => 'number',
+    'input_attrs' => array('min' => 1, 'max' => 20),
+));
+// Pro Version
+        $wp_customize->add_setting( 'pro_version_trending_grid', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_trending_grid', array(
+                    'section'	  => 'maximus_movie_video_trending_grid',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+// Footer Related Posts Slider
+$wp_customize->add_section('maximus_movie_video_footer_related_slider', array(
+    'title'    => esc_html__('Footer Related Posts Slider', 'maximus-movie-video'),
+    'priority' => 9,
+));
+
+// Enable/Disable
+$wp_customize->add_setting('maximus_movie_video_footer_related_enable', array(
+    'default'           => 'enable',
+    'sanitize_callback' => 'sanitize_text_field',
+));
+$wp_customize->add_control('maximus_movie_video_footer_related_enable', array(
+    'label'   => esc_html__('Enable Slider', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_footer_related_slider',
+    'type'    => 'select',
+    'choices' => array(
+        'enable'  => esc_html__('Enable', 'maximus-movie-video'),
+        'disable' => esc_html__('Disable', 'maximus-movie-video'),
+    ),
+));
+$wp_customize->add_setting('maximus_movie_video_footer_related_title', array(
+    'default' => esc_html__('You May Also Like', 'maximus-movie-video'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('maximus_movie_video_footer_related_title', array(
+    'label'   => esc_html__('Footer Related Slider Title', 'maximus-movie-video'),
+    'section' => 'maximus_movie_video_footer_related_slider',
+    'type'    => 'text',
+));
+
+// Category
+$wp_customize->add_setting('maximus_movie_video_footer_related_category', array(
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control(new maximus_movie_video_Customize_Category_Control($wp_customize, 'maximus_movie_video_footer_related_category', array(
+    'label'    => esc_html__('Select Category', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_footer_related_slider',
+    'settings' => 'maximus_movie_video_footer_related_category',
+)));
+
+// Number of Posts
+$wp_customize->add_setting('maximus_movie_video_footer_related_posts', array(
+    'default'           => 10,
+    'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control('maximus_movie_video_footer_related_posts', array(
+    'label'    => esc_html__('Number of Posts', 'maximus-movie-video'),
+    'section'  => 'maximus_movie_video_footer_related_slider',
+    'type'     => 'number',
+    'input_attrs' => array('min' => 1, 'max' => 20),
+));
+// Pro Version
+        $wp_customize->add_setting( 'pro_version_related_slider', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_related_slider', array(
+                    'section'	  => 'maximus_movie_video_footer_related_slider',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+
+
+        //General Options
+
+        $wp_customize->add_section( 'maximus_movie_video_general_options', array(
+            'title'       => esc_html__( 'General Options', 'maximus-movie-video' ),
+            'description' => esc_html__( '(Load More Posts feature is only available in Premium Version. Upgrade to Premium version.)', 'maximus-movie-video' ),
+            'priority'    => 11
+        ) );
+
+
+        $wp_customize->add_setting('maximus_movie_video_latest_posts', array(
+            'default'     => 'Latest Posts',
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'sanitize_text_field',
+        ) );
+        $wp_customize->add_control(new WP_Customize_Control($wp_customize, 'latestposts_title', array(
+                    'label'      => esc_html__('Latest Posts Title','maximus-movie-video'),
+                    'section'    => 'maximus_movie_video_general_options',
+                    'settings'   => 'maximus_movie_video_latest_posts',
+                    'type'		 => 'text',
+                    'priority'	 => 5
+                )
+            )
+        );
+
+
+
+        $wp_customize->add_setting( 'maximus_movie_video_general_search_icon', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_general_search_icon', array(
+            'settings' => 'maximus_movie_video_general_search_icon',
+            'label'    => esc_html__( 'Hide Top Search Icon', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 6
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_general_responsive', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_general_responsive', array(
+            'settings' => 'maximus_movie_video_general_responsive',
+            'label'    => esc_html__( 'Disable Responsive', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 6
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_border_radius', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_border_radius', array(
+            'settings' => 'maximus_movie_video_border_radius',
+            'label'    => esc_html__( 'Disable Round Borders (Only in Premium Version)', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 7
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_loadmore', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_loadmore', array(
+            'settings' => 'maximus_movie_video_loadmore',
+            'label'    => esc_html__( 'Load More Posts (Only in Premium Version)', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 7
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_general_sidebar_home', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_general_sidebar_home', array(
+            'settings' => 'maximus_movie_video_general_sidebar_home',
+            'label'    => esc_html__( 'Disable Sidebar on Homepage and Archive Pages', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 6
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_general_sidebar_post', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_general_sidebar_post', array(
+            'settings' => 'maximus_movie_video_general_sidebar_post',
+            'label'    => esc_html__( 'Disable Sidebar on Posts', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 6
+        ) );
+        $wp_customize->add_setting( 'maximus_movie_video_general_sidebar_page', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_general_sidebar_page', array(
+            'settings' => 'maximus_movie_video_general_sidebar_page',
+            'label'    => esc_html__( 'Disable Sidebar on Pages', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 6
+        ) );
+
+        $wp_customize->add_setting( 'maximus_movie_video_general_author_post', array(
+            'section'  => 'maximus_movie_video_general_options',
+            'capability' => 'edit_theme_options',
+            'sanitize_callback'	=> 'maximus_movie_video_sanitize_checkbox',
+        ) );
+
+        $wp_customize->add_control( 'maximus_movie_video_general_author_post', array(
+            'settings' => 'maximus_movie_video_general_author_post',
+            'label'    => esc_html__( 'Disable Author Box on Posts', 'maximus-movie-video' ),
+            'section'  => 'maximus_movie_video_general_options',
+            'type'     => 'checkbox',
+            'priority' => 6
+        ) );
+
+
+        // Pro Version
+        $wp_customize->add_setting( 'pro_version_colors2', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_colors2', array(
+                    'section'	  => 'maximus_movie_video_general_options',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium for Load More Posts feature - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+        // Footer Settings
+        $wp_customize->add_section( 'maximus_movie_video_footer_settings', array(
+            'title'       => esc_html__( 'Footer Settings', 'maximus-movie-video' ),
+            'description' => esc_html__( 'Configure Your Footer Here. You can\'t change our footer links in the free version of this theme.', 'maximus-movie-video' ),
+             'priority'    => 12
+        ) );
+
+        $wp_customize->add_setting(
+            'footer_copyright',
+            array(
+                'default'     => 'Copyright 2025.',
+                'sanitize_callback' => 'sanitize_text_field'
+            )
+        );
+
+        $wp_customize->add_control('footer_copyright', array(
+                    'label'      => esc_html__('Footer Copyright Text','maximus-movie-video'),
+                    'section'    => 'maximus_movie_video_footer_settings',
+                    'settings'   => 'footer_copyright',
+                    'type'		 => 'text',
+                    'priority'	 => 1
+                )
+        );
+
+
+        // Pro Version
+        $wp_customize->add_setting( 'pro_version_colors3', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_colors3', array(
+                    'section'	  => 'maximus_movie_video_footer_settings',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium for changing Footer Links - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+    }
+
+
+// Adding controls to default customizer panel
+    add_action('customize_register','maximus_movie_video_customizer_options');
+    /*
+     * Add in our custom Main Color setting and control to be used in the Customizer in the Colors section
+     *
+     */
+    function maximus_movie_video_customizer_options( $wp_customize ) {
+
+
+
+
+        $wp_customize->add_setting(
+            'maximus_movie_video_information_bar_bgcolor1', //give it an ID
+            array(
+                'default' => '#f16262', // Give it a default
+                'sanitize_callback' => 'sanitize_hex_color',
+                'transport'      => 'refresh'
+            )
+        );
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize,
+                'maximus_movie_video_information_bar_bgcolor1', //give it an ID
+                array(
+                    'label'      => esc_html__( 'Color1 (Only in Premium Version)', 'maximus-movie-video' ), //set the label to appear in the Customizer
+                    'section'    => 'maximus_movie_video_information_bar', //select the section for it to appear under
+                    'settings'   => 'maximus_movie_video_information_bar_bgcolor1' //pick the setting it applies to
+                )
+            )
+        );
+
+
+        $wp_customize->add_setting(
+            'maximus_movie_video_information_bar_bgcolor2', //give it an ID
+            array(
+                'default' => '#3200ff', // Give it a default
+                'sanitize_callback' => 'sanitize_hex_color',
+                'transport'      => 'refresh'
+            )
+        );
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize,
+                'maximus_movie_video_information_bar_bgcolor2', //give it an ID
+                array(
+                    'label'      => esc_html__( 'Color2 (Only in Premium Version)', 'maximus-movie-video' ), //set the label to appear in the Customizer
+                    'section'    => 'maximus_movie_video_information_bar', //select the section for it to appear under
+                    'settings'   => 'maximus_movie_video_information_bar_bgcolor2' //pick the setting it applies to
+                )
+            )
+        );
+
+
+
+
+
+        $wp_customize->add_setting(
+            'maximus_movie_video_main_color', //give it an ID
+            array(
+                'default' => '#e12b5f', // Give it a default
+                'sanitize_callback' => 'sanitize_hex_color',
+                'transport'      => 'refresh'
+            )
+        );
+        $wp_customize->add_control(
+            new WP_Customize_Color_Control(
+                $wp_customize,
+                'maximus_movie_video_custom_main_color', //give it an ID
+                array(
+                    'label'      => esc_html__( 'Main Color', 'maximus-movie-video' ), //set the label to appear in the Customizer
+                    'section'    => 'colors', //select the section for it to appear under
+                    'settings'   => 'maximus_movie_video_main_color' //pick the setting it applies to
+                )
+            )
+        );
+        $wp_customize->add_setting(
+            'maximus_movie_video_main_text', //give it an ID
+            array(
+                'default' => '#e12b5f', // Give it a default
+                'sanitize_callback' => 'sanitize_hex_color',
+                'transport'      => 'refresh'
+            )
+        );
+         // Pro Version
+        $wp_customize->add_setting( 'pro_version_colors23', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_colors23', array(
+                    'section'	  => 'colors',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium for more Color options - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+
+    // Typography Settings
+        $wp_customize->add_section( 'maximus_movie_video_typography_settings', array(
+            'title'       => esc_html__( 'Typography Settings', 'maximus-movie-video' ),
+             'priority'    => 20
+        ) );
+
+       
+         // Pro Version
+        $wp_customize->add_setting( 'pro_version_colors243', array(
+            'sanitize_callback' => 'maximus_movie_video_sanitize_custom_control'
+        ) );
+        $wp_customize->add_control( new Maximus_Movie_Video_Customize_Pro_Version ( $wp_customize,
+                'pro_version_colors243', array(
+                    'section'	  => 'maximus_movie_video_typography_settings',
+                    'type'		  => 'pro_options',
+                    'label' 	  => esc_html__( 'Upgrade', 'maximus-movie-video' ),
+                    'message'     => esc_html__( 'Upgrade to Maximus Movie Video Premium for Typography options - ', 'maximus-movie-video' ),
+                    'description' => esc_url_raw( 'https://www.vinethemes.com/downloads/maximus-movie-video-wordpress-theme/' ),
+                    'priority'	  => 100
+                )
+            )
+        );
+
+
+    }
+
+
+function maximus_movie_video_sanitize_image( $file, $setting ) {
+
+    $mimes = array(
+        'jpg|jpeg|jpe' => 'image/jpeg',
+        'png'          => 'image/png',
+        'gif'          => 'image/gif',
+        'bmp'          => 'image/bmp',
+        'tif|tiff'     => 'image/tiff',
+        'ico'          => 'image/x-icon',
+        'webp'         => 'image/webp',
+        'avif'         => 'image/avif',
+    );
+
+    //check file type from file name
+    $file_ext = wp_check_filetype( $file, $mimes );
+
+    //if file has a valid mime type return it, otherwise return default
+    return ( $file_ext['ext'] ? $file : $setting->default );
+}
+
+
+
+    function maximus_movie_video_sanitize_text( $input ) {
+        return wp_kses_post( force_balance_tags( $input ) );
+    }
+
+
+    //checkbox sanitization function
+    function maximus_movie_video_sanitize_checkbox( $input ){
+
+        //returns true if checkbox is checked
+        return (( isset( $input ) && true === $input ) ? true : false );
+    }
+
+    //radio box sanitization function
+    function maximus_movie_video_sanitize_radio( $input, $setting ){
+    $valid = array(
+        'Slider1' => 'Slider1',
+        'Slider2' => 'Slider2',
+        'Slider3' => 'Slider3',
+        'excerpt' => 'excerpt',
+        'full' => 'full',
+        'standard' => 'standard',
+        'grid' => 'grid',
+        'enable' => 'enable',
+        'disable' => 'disable',
+    );
+    if ( array_key_exists( $input, $valid ) ) {
+        return $input;
+    } else {
+        return $setting->default;
+    }
+    }
+
+    function maximus_movie_video_panels_js() {
+        wp_enqueue_style( 'maximus-movie-video-customizer-ui-css', get_theme_file_uri( '/customizer-ui.css' ) );
+    }
+    add_action( 'customize_controls_enqueue_scripts', 'maximus_movie_video_panels_js' );

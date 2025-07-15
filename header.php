@@ -1,0 +1,278 @@
+<?php
+    /**
+     *
+     * Displays all of the <head> section and everything before <div id="content-wrap">
+     *
+     * @package maximus-movie-video
+     * @since maximus-movie-video 1.0
+     */
+    ?>
+    <!DOCTYPE html>
+    <html <?php language_attributes(); ?>>
+    <head>
+        <meta charset="<?php bloginfo( 'charset' ); ?>" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="profile" href="http://gmpg.org/xfn/11" />
+
+        <?php if ( is_singular() && pings_open() ) { ?>
+            <link rel="pingback" href="<?php echo esc_url(get_bloginfo( 'pingback_url' )); ?>" />
+        <?php } ?>
+
+        <?php wp_head(); ?>
+    </head>
+
+    <body <?php body_class(); ?>>
+    
+    <?php
+    //wp_body_open hook from WordPress 5.2
+    if (function_exists('wp_body_open')) {
+        wp_body_open();
+    }
+    else { do_action( 'wp_body_open' ); }
+    ?>
+    <a class="skip-link screen-reader-text" href="#main-content"><?php _e( 'Skip to main content', 'maximus-movie-video' ); ?></a>
+    
+
+
+        <div class="maximus-movie-video-top-bar header1">
+            <div class="header1wrap">
+        <!-- Update your toggle button to remove href -->
+         
+         
+
+
+
+<!-- Toggle button -->
+<?php if ( has_nav_menu( 'main' ) ) { ?>
+<button class="toggle" data-micromodal-trigger="menu-modal" aria-controls="menu-modal">
+<i class="fa fa-bars"></i>
+<span class="screen-reader-text">Menu</span>
+</button>
+<?php } ?>
+
+
+
+
+
+            <div class="header-inside clearfix">
+
+
+
+                <div class="hearder-holder">
+
+
+
+                    <?php if( is_front_page() && is_home() ) { ?>
+
+                        <div class="logo-default">
+                            <div class="logo-text">
+
+                                <?php
+                                $light_logo = get_theme_mod('maximus_movie_video_light_logo');
+                                $dark_logo = get_theme_mod('maximus_movie_video_dark_logo');
+
+                                if ($light_logo || $dark_logo) {
+                                    $light_logo_dimensions = $light_logo ? getimagesize($light_logo) : false;
+                                    $dark_logo_dimensions = $dark_logo ? getimagesize($dark_logo) : false;
+                                    ?>
+                                    <a class="lightlogo" href="<?php echo esc_url(home_url('/')); ?>">
+                                        <img src="<?php echo $light_logo ? esc_url($light_logo) : ''; ?>" alt="<?php esc_attr_e('Light Header image', 'maximus-movie-video'); ?>" width="<?php echo $light_logo_dimensions[0]; ?>" height="<?php echo $light_logo_dimensions[1]; ?>" />
+                                    </a>
+                                    <a class="darklogo" href="<?php echo esc_url(home_url('/')); ?>">
+                                        <img src="<?php echo $dark_logo ? esc_url($dark_logo) : ''; ?>" alt="<?php esc_attr_e('Dark Header image', 'maximus-movie-video'); ?>" width="<?php echo $dark_logo_dimensions[0]; ?>" height="<?php echo $dark_logo_dimensions[1]; ?>" />
+                                    </a>
+                                    <?php if (display_header_text()) { ?>
+                                        <h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
+                                        <span class="site-description"><?php bloginfo('description'); ?></span>
+                                    <?php }
+                                }
+
+                                else {
+
+                                if (display_header_text() == true){
+                                ?>
+                                <span class="only-text">
+                                <h1>
+                                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo( 'name' ); ?></a>
+                                </h1>
+                                <span><?php bloginfo('description') ?></span>
+                                </span>
+                                <?php
+                                }
+                                }
+                                ?><!-- otherwise show the site title and description -->
+
+                            </div>
+
+                        </div>
+
+                    <?php } else { ?>
+
+                        <div class="logo-default">
+                            <div class="logo-text">
+
+                                <?php
+                                $light_logo = get_theme_mod('maximus_movie_video_light_logo');
+                                $dark_logo = get_theme_mod('maximus_movie_video_dark_logo');
+
+                                if ($light_logo || $dark_logo) {
+                                    $light_logo_dimensions = $light_logo ? getimagesize($light_logo) : false;
+                                    $dark_logo_dimensions = $dark_logo ? getimagesize($dark_logo) : false;
+                                    ?>
+                                    <a class="lightlogo" href="<?php echo esc_url(home_url('/')); ?>">
+                                        <img src="<?php echo $light_logo ? esc_url($light_logo) : ''; ?>" alt="<?php esc_attr_e('Light Header image', 'maximus-movie-video'); ?>" width="<?php echo $light_logo_dimensions[0]; ?>" height="<?php echo $light_logo_dimensions[1]; ?>" />
+                                    </a>
+                                    <a class="darklogo" href="<?php echo esc_url(home_url('/')); ?>">
+                                        <img src="<?php echo $dark_logo ? esc_url($dark_logo) : ''; ?>" alt="<?php esc_attr_e('Dark Header image', 'maximus-movie-video'); ?>" width="<?php echo $dark_logo_dimensions[0]; ?>" height="<?php echo $dark_logo_dimensions[1]; ?>" />
+                                    </a>
+                                    <?php if (display_header_text()) { ?>
+                                        <h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
+                                        <span class="site-description"><?php bloginfo('description'); ?></span>
+                                    <?php }
+                                }
+
+                                else {
+
+                                if (display_header_text() == true){
+                                ?>
+                                <h2>
+                                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php bloginfo( 'name' ); ?></a>
+                                </h2>
+                                <span><?php bloginfo('description') ?></span>
+                                <?php
+                                }
+                                }
+                                ?><!-- otherwise show the site title and description -->
+
+                            </div>
+
+                        </div>
+
+                    <?php } ?>
+
+
+
+                    <?php if ( has_header_image() ) { ?>
+                        <img src="<?php header_image(); ?>" class="header-image" alt="<?php esc_attr_e( 'Header image','maximus-movie-video' ); ?>" />
+                    <?php } ?>
+
+                </div>
+
+            </div><!-- header inside -->
+            <div class="menu-wrap">
+
+            
+
+
+
+
+<!-- MicroModal-based Offcanvas -->
+<div class="modal micromodal-slide" id="menu-modal" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container menu-container" role="dialog" aria-modal="true" aria-labelledby="menu-modal-title">
+
+      <header class="menu-header">
+        
+        <button class="modal__close" type="button" aria-label="Close menu" data-micromodal-close>x</button>
+      </header>
+
+      <?php if ( has_nav_menu( 'main' ) ) { ?>
+                <div class="top-bar">
+                    <div class="menu-wrap-inner">
+                        <nav id="main-nav">
+                            <?php
+                            wp_nav_menu( array(
+                                'theme_location' => 'main',
+                                'menu_class'     => '',
+                                'container'      => false, // important!
+                                'depth'          => 3,
+                                'fallback_cb'    => false,
+                            ) );
+                            ?>
+                            <!-- Social icons inside #main-nav now -->
+                            <ul class="social-icons">
+                            <?php
+                            $socials = array(
+                                'facebook'  => 'fab fa-facebook-f',
+                                'twitter'   => 'fab fa-x-twitter',
+                                'instagram' => 'fab fa-instagram',
+                                'youtube'   => 'fab fa-youtube',
+                                'telegram'  => 'fab fa-telegram-plane',
+                                'tiktok'    => 'fab fa-tiktok',
+                                'linkedin'  => 'fab fa-linkedin-in',
+                                'pinterest' => 'fab fa-pinterest-p',
+                                'snapchat'  => 'fab fa-snapchat-ghost',
+                                'whatsapp'  => 'fab fa-whatsapp',
+                                'reddit'    => 'fab fa-reddit-alien',
+                                'tumblr'    => 'fab fa-tumblr',
+                                'discord'   => 'fab fa-discord',
+                                'spotify'   => 'fab fa-spotify',
+                                'dribbble'  => 'fab fa-dribbble',
+                                'behance'   => 'fab fa-behance',
+                                'github'    => 'fab fa-github',
+                                'medium'    => 'fab fa-medium',
+                                'slack'     => 'fab fa-slack',
+                                'vk'        => 'fab fa-vk',
+                                'flickr'    => 'fab fa-flickr',
+                                'vimeo'     => 'fab fa-vimeo-v',
+                                'wechat'    => 'fab fa-weixin',
+                                'line'      => 'fab fa-line',
+                            );
+
+                            foreach ($socials as $key => $icon) :
+                                $url = get_theme_mod("maximus_movie_video_social_$key");
+                                if (!empty($url)) :
+                            ?>
+                                <li><a href="<?php echo esc_url($url); ?>" target="_blank"><i class="<?php echo esc_attr($icon); ?>"></i></a></li>
+                            <?php endif; endforeach; ?>
+                        </ul>
+
+                        </nav>
+                    </div>
+                </div><!-- .top-bar -->
+            <?php } ?>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
+            <div class="search-bar">
+
+                <div class="search-wrap">
+                    <?php if(!get_theme_mod('maximus_movie_video_general_search_icon')) : ?>
+                        
+                        <?php get_search_form(); ?>
+                        
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+
+            </div>
+            <div class="submit-video">
+                <a href="<?php echo esc_url(get_theme_mod('maximus_movie_video_submit_video_url', '/submit-video')); ?>" class="submit-video-btn">Submit Video</a>
+            </div>
+            </div>
+
+        </div><!-- top bar -->
+        
+    <div id="main-content" class="clearfix">
+
+
+            <div id="main" class="clearfix">
