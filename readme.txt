@@ -82,50 +82,8 @@ Source: https://pxhere.com/en/photo/1445745
 
 Images for Screenshot - [Slider]
 License - CC0
-Source:
+Source: https://pxhere.com/en/photo/1427193
 
-1. https://pxhere.com/en/photo/993382
-2. https://pxhere.com/en/photo/774568
-3. https://pxhere.com/en/photo/1448583
-4. https://pxhere.com/en/photo/1333031
-5. https://pxhere.com/en/photo/1409829
-6. https://pxhere.com/en/photo/443600
-7. https://pxhere.com/en/photo/1010806
-8. https://pxhere.com/en/photo/1418912
-9. https://pxhere.com/en/photo/506915
-10. https://pxhere.com/en/photo/845999
-11. https://pxhere.com/en/photo/1417027
-12. https://pxhere.com/en/photo/1256371
-13. https://pxhere.com/en/photo/130910
-14. https://pxhere.com/en/photo/1286373
-15. https://pxhere.com/en/photo/676141
-16. https://pxhere.com/en/photo/749475
-17. https://pxhere.com/en/photo/1593575
-18. https://pxhere.com/en/photo/922038
-19. https://pxhere.com/en/photo/1366701
-20. https://pxhere.com/en/photo/1347939
-
-
-Grid Section below Slider
-License - CC0
-Source:
-
-1. https://pxhere.com/en/photo/993382
-2. https://pxhere.com/en/photo/890710
-3. https://pxhere.com/en/photo/538661
-4. https://pxhere.com/en/photo/774568
-5. https://pxhere.com/en/photo/1414592
-6. https://pxhere.com/en/photo/1448583
-7. https://pxhere.com/en/photo/1333031
-8. https://pxhere.com/en/photo/443600
-9. https://pxhere.com/en/photo/1418912
-10. https://pxhere.com/en/photo/506915
-11. https://pxhere.com/en/photo/1417027
-12. https://pxhere.com/en/photo/130910
-13. https://pxhere.com/en/photo/676141
-14. https://pxhere.com/en/photo/749475
-15. https://pxhere.com/en/photo/1593575
-16. https://pxhere.com/en/photo/1347939
 
 == Installation ==
 
@@ -145,13 +103,5 @@ Contact Us https://www.vinethemes.com/forums.
 
 == Changelog ==
 
-= 1.0 - Feb 16 2025 =
+= 1.0 - July 26 2025 =
 * Initial Public Release
-
-= 1.0.1 - June 30 2025 =
-* Added accessiblility support with Micromodal.js for Offcanvas menu
-* Removed Hc-Offcanvas-menu support 
-* Fixed Skip links
-* Fixed anchor tag underline 
-* Fixed prefixing issue
-* Added license info for JS library, CSS library used 

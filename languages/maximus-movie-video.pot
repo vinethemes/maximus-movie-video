@@ -2,9 +2,9 @@
 # This file is distributed under the GNU General Public License v2.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Maximus Movie Video 1.0\n"
+"Project-Id-Version: Maximus Movie Video 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/maximus-movie-video\n"
-"POT-Creation-Date: 2025-06-20 19:37:39+00:00\n"
+"POT-Creation-Date: 2025-08-03 18:39:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: archive.php:74 inc/sections/footer-slider.php:94
 #: inc/sections/highlight-slider.php:94 inc/sections/large-poster.php:47
-#: inc/sections/large-poster.php:77 inc/sections/slider.php:111
+#: inc/sections/large-poster.php:77 inc/sections/slider.php:79
 #: inc/sections/trending-grid.php:78 inc/sections/two-row-grid.php:78
 #: index.php:117 single.php:51 single.php:155
 msgid "0"
@@ -30,7 +30,7 @@ msgstr ""
 
 #: archive.php:74 inc/sections/footer-slider.php:94
 #: inc/sections/highlight-slider.php:94 inc/sections/large-poster.php:47
-#: inc/sections/large-poster.php:77 inc/sections/slider.php:111
+#: inc/sections/large-poster.php:77 inc/sections/slider.php:79
 #: inc/sections/trending-grid.php:78 inc/sections/two-row-grid.php:78
 #: index.php:117 single.php:51 single.php:155
 msgid "1"
@@ -38,7 +38,7 @@ msgstr ""
 
 #: archive.php:74 inc/sections/footer-slider.php:94
 #: inc/sections/highlight-slider.php:94 inc/sections/large-poster.php:47
-#: inc/sections/large-poster.php:77 inc/sections/slider.php:111
+#: inc/sections/large-poster.php:77 inc/sections/slider.php:79
 #: inc/sections/trending-grid.php:78 inc/sections/two-row-grid.php:78
 #: index.php:117 single.php:51 single.php:155
 msgid "%"
@@ -198,7 +198,8 @@ msgstr ""
 msgid "Installed But Not Activated"
 msgstr ""
 
-#: class-tgm-plugin-activation.php:2422 inc/about/about-maximus-movie-video.php:72
+#: class-tgm-plugin-activation.php:2422
+#: inc/about/about-maximus-movie-video.php:72
 msgid "Active"
 msgstr ""
 
@@ -454,7 +455,8 @@ msgstr ""
 msgid "Get Maximus Movie Video Premium"
 msgstr ""
 
-#: customizer.php:48 customizer.php:50 inc/about/about-maximus-movie-video.php:142
+#: customizer.php:48 customizer.php:50
+#: inc/about/about-maximus-movie-video.php:142
 msgid "Documentation"
 msgstr ""
 
@@ -462,7 +464,8 @@ msgstr ""
 msgid "Read how to customize the theme, set up widgets, and learn all the possible options available to you."
 msgstr ""
 
-#: customizer.php:53 customizer.php:55 inc/about/about-maximus-movie-video.php:29
+#: customizer.php:53 customizer.php:55
+#: inc/about/about-maximus-movie-video.php:29
 msgid "Support"
 msgstr ""
 
@@ -695,15 +698,11 @@ msgstr ""
 msgid "Upgrade to Maximus Movie Video Premium for Typography options - "
 msgstr ""
 
-#: footer.php:58
-msgid "Copyright &copy; 2025. All Rights Reserved."
+#: footer.php:49
+msgid "Copyright © 2025. All Rights Reserved."
 msgstr ""
 
-#: footer.php:68
-msgid "Designed by"
-msgstr ""
-
-#: footer.php:71
+#: footer.php:57
 msgid "VineThemes"
 msgstr ""
 
@@ -715,99 +714,99 @@ msgstr ""
 msgid "Main Menu"
 msgstr ""
 
-#: functions.php:176
+#: functions.php:178
 msgid "Below Slider"
 msgstr ""
 
-#: functions.php:178
+#: functions.php:180
 msgid "This widget area is for Newsletter, Ads, Most popular widgets, etc."
 msgstr ""
 
-#: functions.php:185
+#: functions.php:187
 msgid "Sidebar"
 msgstr ""
 
-#: functions.php:187
+#: functions.php:189
 msgid "Widgets in this area will be shown on the sidebar of all pages."
 msgstr ""
 
-#: functions.php:192
+#: functions.php:194
 msgid "Footer Top"
 msgstr ""
 
-#: functions.php:198
+#: functions.php:200
 msgid "Use the \"Footer Top\" widget here."
 msgstr ""
 
-#: functions.php:201
+#: functions.php:203
 msgid "Instagram Footer"
 msgstr ""
 
-#: functions.php:207
+#: functions.php:209
 msgid "Use the \"Instagram\" widget here. IMPORTANT: For best result set number of photos to 8."
 msgstr ""
 
-#: functions.php:211
+#: functions.php:213
 msgid "Footer Left"
 msgstr ""
 
-#: functions.php:213 functions.php:220 functions.php:227
+#: functions.php:215 functions.php:222 functions.php:229
 msgid "This widget area is for Footer Widgets."
 msgstr ""
 
-#: functions.php:218
+#: functions.php:220
 msgid "Footer Center"
 msgstr ""
 
-#: functions.php:225
+#: functions.php:227
 msgid "Footer Right"
 msgstr ""
 
-#: functions.php:238
+#: functions.php:240
 msgid "Thank you for choosing Maximus Movie Video! Now, we highly recommend you to visit our welcome page."
 msgstr ""
 
-#: functions.php:239
+#: functions.php:241
 msgid "Get Started with Maximus Movie Video"
 msgstr ""
 
 #. translators: %s: comment author link
 
-#: functions.php:271
+#: functions.php:273
 msgid "<cite class=\"fn\">%s</cite>"
 msgstr ""
 
 #. translators: %s: comment date
 
-#: functions.php:272
+#: functions.php:274
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: functions.php:284
+#: functions.php:286
 msgid "Edit"
 msgstr ""
 
-#: functions.php:292
+#: functions.php:294
 msgid "Your comment is awaiting moderation."
 msgstr ""
 
-#: functions.php:401
+#: functions.php:403
 msgid "Posted By"
 msgstr ""
 
-#: header.php:34
+#: header.php:42
 msgid "Skip to main content"
 msgstr ""
 
-#: header.php:70 header.php:114
+#: header.php:89 header.php:134
 msgid "Light Header image"
 msgstr ""
 
-#: header.php:73 header.php:117
+#: header.php:92 header.php:137
 msgid "Dark Header image"
 msgstr ""
 
-#: header.php:147
+#: header.php:167
 msgid "Header image"
 msgstr ""
 
@@ -875,7 +874,8 @@ msgstr ""
 msgid "Version 1"
 msgstr ""
 
-#: inc/about/about-maximus-movie-video.php:76 inc/about/about-maximus-movie-video.php:83
+#: inc/about/about-maximus-movie-video.php:76
+#: inc/about/about-maximus-movie-video.php:83
 #: inc/about/about-maximus-movie-video.php:90
 msgid "Live Preview"
 msgstr ""
@@ -1052,7 +1052,8 @@ msgstr ""
 msgid "Grid Layout"
 msgstr ""
 
-#: inc/about/about-maximus-movie-video.php:302 inc/about/about-maximus-movie-video.php:310
+#: inc/about/about-maximus-movie-video.php:302
+#: inc/about/about-maximus-movie-video.php:310
 msgid "Choose from 1 up to 4 columns grid layout for your Blog Feed."
 msgstr ""
 
@@ -1081,7 +1082,7 @@ msgid "You may also like"
 msgstr ""
 
 #: inc/sections/footer-slider.php:68 inc/sections/highlight-slider.php:68
-#: inc/sections/large-poster.php:87 inc/sections/slider.php:92
+#: inc/sections/large-poster.php:87 inc/sections/slider.php:58
 #: inc/sections/trending-grid.php:56 inc/sections/two-row-grid.php:56
 #: index.php:70
 msgid "No Image"

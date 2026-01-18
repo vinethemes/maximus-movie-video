@@ -111,7 +111,12 @@ function maximus_movie_video_scripts() {
     wp_enqueue_style( 'maximus-movie-video-mcustomscrollbar-css', get_template_directory_uri() . '/includes/css/mcustomscrollbar/jquery.mCustomScrollbar.min.css', array(), '3.0.6', 'screen' );
 
     //mCustom Scroll bar
-    wp_enqueue_script( 'maximus-movie-video-mcustomscrollbar-js', get_template_directory_uri() . '/includes/js/mcustomscrollbar/jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), '3.0.6', true );
+    wp_enqueue_script( 'maximus-movie-video-mcustomscrollbar-js', get_template_directory_uri() . '/includes/js/mcustomscrollbar/jquery.mCustomScrollbar.js', array( 'jquery' ), '3.0.6', true );
+
+    //mCustom MouseWheel bar
+    wp_enqueue_script( 'maximus-movie-video-mousewheel-js', get_template_directory_uri() . '/includes/js/mcustomscrollbar/jquery.mousewheel.js', array( 'jquery' ), '3.1.13', true );
+
+
 
     //micromodal
     wp_enqueue_script( 'maximus-movie-video-jquery-micromodal', get_template_directory_uri() . '/includes/js/micromodal/micromodal.js', array( 'jquery' ), $version, true );
@@ -121,6 +126,9 @@ function maximus_movie_video_scripts() {
 
 	//matchheight
     wp_enqueue_script( 'maximus-movie-video-jquery-matchheight', get_template_directory_uri() . '/includes/js/matchheight/matchheight.js', array( 'jquery' ), $version, true );
+
+    //Slickslider
+	wp_enqueue_script( 'maximus-jquery-slickslider', get_template_directory_uri() . '/includes/js/slickslider/slick.min.js', array( 'jquery' ), '1.8.0', true );
 
     //outline.js
     wp_enqueue_script( 'maximus-movie-video-jquery-outline', get_template_directory_uri() . '/includes/js/outline/outline.js', array( 'jquery' ), $version, true );
@@ -505,24 +513,25 @@ add_action( 'wp_footer', function () {   if( !is_admin() ) {  ?>
 
 
 
-
-
 function maximus_movie_video_has_video_embed($post_id = null) {
-    if (!$post_id) {
-        $post_id = get_the_ID();
-    }
+    $post_id = $post_id ?: get_the_ID();
 
     $content = get_post_field('post_content', $post_id);
 
-    return preg_match('/youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com/', $content);
+    if (!is_string($content)) return false;
+
+    return preg_match('/youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com|facebook\.com/', $content);
 }
 
 function maximus_movie_video_get_first_video_embed($post_id = null) {
     $post_id = $post_id ?: get_the_ID();
     $content = get_post_field('post_content', $post_id);
+
+    if (!is_string($content)) return '';
+
     $blocks = parse_blocks($content);
 
-    // Normalize embed URLs to oEmbed compatible format
+    // Normalize YouTube embedded URLs
     $normalize_youtube_url = function($url) {
         if (strpos($url, 'youtube.com/embed/') !== false) {
             preg_match('/embed\/([a-zA-Z0-9_-]+)/', $url, $matches);
@@ -533,44 +542,58 @@ function maximus_movie_video_get_first_video_embed($post_id = null) {
         return $url;
     };
 
-    // 1. Check for Gutenberg embed blocks
+    // 1. Gutenberg embed blocks (YouTube, Vimeo, etc.)
     foreach ($blocks as $block) {
+        if (!isset($block['blockName'])) continue;
+
         if (
-            isset($block['blockName']) &&
-            (
-                $block['blockName'] === 'core/embed' ||
-                strpos($block['blockName'], 'core-embed/') === 0
-            )
+            $block['blockName'] === 'core/embed' ||
+            strpos($block['blockName'], 'core-embed/') === 0
         ) {
             if (!empty($block['attrs']['url'])) {
                 $url = $normalize_youtube_url($block['attrs']['url']);
-                $embed_html = wp_oembed_get($url, ['autoplay' => 1]);
-                if ($embed_html) {
-                    return '<div class="video-embed">' . $embed_html . '</div>';
+                $embed_html = wp_oembed_get($url);
+
+                // Inject autoplay and mute if it's YouTube or Vimeo
+                if (strpos($url, 'youtube.com') !== false || strpos($url, 'youtu.be') !== false) {
+                    $embed_html = preg_replace('/src="([^"]+)"/', 'src="$1&autoplay=1&mute=1"', $embed_html);
+                } elseif (strpos($url, 'vimeo.com') !== false) {
+                    $embed_html = preg_replace('/src="([^"]+)"/', 'src="$1&autoplay=1&muted=1"', $embed_html);
                 }
+
+                return '<div class="video-embed">' . $embed_html . '</div>';
             }
         }
 
-        // 2. Gutenberg core/video
-        if (
-            isset($block['blockName']) &&
-            $block['blockName'] === 'core/video' &&
-            !empty($block['innerHTML'])
-        ) {
+        // 2. Gutenberg core/video block
+        if ($block['blockName'] === 'core/video' && !empty($block['innerHTML'])) {
             return '<div class="video-embed">' . $block['innerHTML'] . '</div>';
         }
     }
 
     // 3. Manual <iframe> fallback
     if (preg_match('/<iframe[^>]+src=["\']([^"\']+)["\'][^>]*><\/iframe>/', $content, $matches)) {
-        return '<div class="video-embed">' . $matches[0] . '</div>';
+        $src = $matches[1];
+        if (strpos($src, 'youtube.com') !== false) {
+            $src .= '&autoplay=1&mute=1';
+        } elseif (strpos($src, 'vimeo.com') !== false) {
+            $src .= '&autoplay=1&muted=1';
+        }
+        $iframe = str_replace($matches[1], esc_url($src), $matches[0]);
+        return '<div class="video-embed">' . $iframe . '</div>';
     }
 
-    // 4. Auto-detect YouTube/Vimeo/etc links and normalize YouTube embed
+    // 4. Auto-detected video links
     if (preg_match('/https?:\/\/(?:www\.)?(youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com|facebook\.com)\/[^\s"\']+/', $content, $match)) {
         $url = $normalize_youtube_url($match[0]);
-        $embed_html = wp_oembed_get($url, ['autoplay' => 1]);
+        $embed_html = wp_oembed_get($url);
+
         if ($embed_html) {
+            if (strpos($url, 'youtube.com') !== false || strpos($url, 'youtu.be') !== false) {
+                $embed_html = preg_replace('/src="([^"]+)"/', 'src="$1&autoplay=1&mute=1"', $embed_html);
+            } elseif (strpos($url, 'vimeo.com') !== false) {
+                $embed_html = preg_replace('/src="([^"]+)"/', 'src="$1&autoplay=1&muted=1"', $embed_html);
+            }
             return '<div class="video-embed">' . $embed_html . '</div>';
         }
     }
@@ -580,29 +603,33 @@ function maximus_movie_video_get_first_video_embed($post_id = null) {
 
 
 
+// Autoplay for YouTube and Vimeo oEmbeds
 add_filter('oembed_result', 'maximus_movie_video_autoplay_video_embeds', 10, 3);
 function maximus_movie_video_autoplay_video_embeds($html, $url, $args) {
-    if (strpos($url, 'youtube.com') !== false ) {
+    if (strpos($url, 'youtube.com') !== false) {
         $html = preg_replace('/src="([^"]+)"/', 'src="$1&autoplay=1&mute=1"', $html);
-    }
-    else if (strpos($url, 'vimeo.com') !== false) {
+    } elseif (strpos($url, 'vimeo.com') !== false) {
         $html = preg_replace('/src="([^"]+)"/', 'src="$1&autoplay=1&muted=1"', $html);
     }
     return $html;
 }
+
+// Remove the first video/embed block from post content
 function maximus_movie_video_remove_first_video_block($content) {
     $blocks = parse_blocks($content);
     $output = '';
     $removed = false;
 
     foreach ($blocks as $block) {
-        // Remove only the first embed or video block
+        $block_name = isset($block['blockName']) ? $block['blockName'] : '';
+
+        // Remove only the first embed/video block
         if (
             !$removed &&
             (
-                $block['blockName'] === 'core/embed' ||
-                strpos($block['blockName'], 'core-embed/') === 0 ||
-                $block['blockName'] === 'core/video'
+                $block_name === 'core/embed' ||
+                (is_string($block_name) && strpos($block_name, 'core-embed/') === 0) ||
+                $block_name === 'core/video'
             )
         ) {
             $removed = true;
@@ -616,22 +643,34 @@ function maximus_movie_video_remove_first_video_block($content) {
 }
 
 
+
 function maximus_movie_video_get_embed_thumbnail($post_id) {
     $content = get_post_field('post_content', $post_id);
+
+    if (!is_string($content) || empty($content)) {
+        return false;
+    }
 
     // Match YouTube URLs: watch, youtu.be, embed
     if (preg_match('/https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/', $content, $yt_match)) {
         $video_id = $yt_match[1];
-        return "https://img.youtube.com/vi/{$video_id}/maxresdefault.jpg";
+        // Optional: check if maxresdefault exists (fallback to hqdefault)
+        $maxres = "https://img.youtube.com/vi/{$video_id}/maxresdefault.jpg";
+        $headers = wp_remote_head($maxres);
+        if (!is_wp_error($headers) && isset($headers['response']) && $headers['response']['code'] == 200) {
+            return $maxres;
+        } else {
+            return "https://img.youtube.com/vi/{$video_id}/hqdefault.jpg";
+        }
     }
 
     // Match Vimeo video URLs
-    if (preg_match('/https?:\/\/(?:www\.)?vimeo\.com\/([0-9]+)/', $content, $vimeo_match)) {
+    if (preg_match('/https?:\/\/(?:www\.)?vimeo\.com\/(\d+)/', $content, $vimeo_match)) {
         $video_id = $vimeo_match[1];
         $response = wp_remote_get("https://vimeo.com/api/v2/video/{$video_id}.json");
         if (!is_wp_error($response)) {
             $body = json_decode(wp_remote_retrieve_body($response), true);
-            if (!empty($body[0]['thumbnail_large'])) {
+            if (isset($body[0]['thumbnail_large'])) {
                 return esc_url($body[0]['thumbnail_large']);
             }
         }

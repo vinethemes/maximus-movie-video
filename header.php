@@ -20,6 +20,14 @@
         <?php } ?>
 
         <?php wp_head(); ?>
+        <style>
+        .slider-wrapper23{
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease;
+            -webkit-transition: opacity 1s ease;
+        }
+    </style>
     </head>
 
     <body <?php body_class(); ?>>
@@ -73,8 +81,9 @@
                                 $dark_logo = get_theme_mod('maximus_movie_video_dark_logo');
 
                                 if ($light_logo || $dark_logo) {
-                                    $light_logo_dimensions = $light_logo ? getimagesize($light_logo) : false;
-                                    $dark_logo_dimensions = $dark_logo ? getimagesize($dark_logo) : false;
+                                    $light_logo_dimensions = ( ! empty($light_logo) && @getimagesize($light_logo) ) ? getimagesize($light_logo) : [0, 0];
+
+                                    $dark_logo_dimensions = ( ! empty($dark_logo) && @getimagesize($dark_logo) ) ? getimagesize($dark_logo) : [0, 0];
                                     ?>
                                     <a class="lightlogo" href="<?php echo esc_url(home_url('/')); ?>">
                                         <img src="<?php echo $light_logo ? esc_url($light_logo) : ''; ?>" alt="<?php esc_attr_e('Light Header image', 'maximus-movie-video'); ?>" width="<?php echo $light_logo_dimensions[0]; ?>" height="<?php echo $light_logo_dimensions[1]; ?>" />
@@ -117,8 +126,9 @@
                                 $dark_logo = get_theme_mod('maximus_movie_video_dark_logo');
 
                                 if ($light_logo || $dark_logo) {
-                                    $light_logo_dimensions = $light_logo ? getimagesize($light_logo) : false;
-                                    $dark_logo_dimensions = $dark_logo ? getimagesize($dark_logo) : false;
+                                    $light_logo_dimensions = ( ! empty($light_logo) && @getimagesize($light_logo) ) ? getimagesize($light_logo) : [0, 0];
+
+                                    $dark_logo_dimensions = ( ! empty($dark_logo) && @getimagesize($dark_logo) ) ? getimagesize($dark_logo) : [0, 0];
                                     ?>
                                     <a class="lightlogo" href="<?php echo esc_url(home_url('/')); ?>">
                                         <img src="<?php echo $light_logo ? esc_url($light_logo) : ''; ?>" alt="<?php esc_attr_e('Light Header image', 'maximus-movie-video'); ?>" width="<?php echo $light_logo_dimensions[0]; ?>" height="<?php echo $light_logo_dimensions[1]; ?>" />

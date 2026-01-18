@@ -6,13 +6,18 @@ jQuery(document).ready(function( $ ) {
 
 
 
-   $('.slider-wrapper23.main.slider .maximus_movie_video_slides').mCustomScrollbar({
-            axis: 'x',
-            scrollButtons: { enable: true },
-            mouseWheel: { enable: true, axis: 'x' },
-            advanced: { autoExpandHorizontalScroll: true },
-            alwaysShowScrollbar:2,
-            scrollInertia: 200,
+   $('.slider-wrapper23.main.slider .maximus_movie_video_slides').slick({
+        dots: false,
+        infinite: true,
+        speed: 750,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        slidesToShow: 1,
+        fade:true,
+        slidesToScroll:1,
+        prevArrow: '<button type="button" class="slick-nav slick-prev"><i class="fa fa-angle-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-nav slick-next"><i class="fa fa-angle-right"></i></button>',
+        arrows:true
     });
     $('.slider-wrapper23 .highlight-slider-grid').mCustomScrollbar({
             axis: 'x',
@@ -197,8 +202,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     const menu = document.getElementById("main-nav");
-  
-    menu.querySelectorAll(".menu-item-has-children").forEach((li, index) => {
+
+    if (menu) {
+        menu.querySelectorAll(".menu-item-has-children").forEach((li, index) => {
+
       const link = li.querySelector("a");
       const submenu = li.querySelector(".sub-menu");
   
@@ -233,5 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     });
+  }
   });
   
