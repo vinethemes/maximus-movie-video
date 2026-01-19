@@ -2,8 +2,8 @@
 Contributors: vinethemes
 Requires at least: WordPress 4.7
 Tested up to: WordPress 6.8.1
-Version: 1.0.1
-Stable tag: 1.0.1
+Version: 1.0.2
+Stable tag: 1.0.2
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: two-columns, right-sidebar, custom-background, custom-colors, custom-header, flexible-header, custom-menu, editor-style, featured-images, custom-logo, sticky-post, footer-widgets, theme-options, threaded-comments, translation-ready, blog, news, full-width-template, grid-layout, one-column, post-formats, entertainment
@@ -103,5 +103,9 @@ Contact Us https://www.vinethemes.com/forums.
 
 == Changelog ==
 
-= 1.0 - July 26 2025 =
+= 1.0.1 - July 26 2025 =
 * Initial Public Release
+
+= 1.0.2 - Jan 19 2026 =
+* Fixed uncaught typeerror in custom.js 
+* Provided uncompressed js files
